@@ -1,0 +1,27 @@
+{
+  "name": "clean-architecture-with-typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ricardo-Costa/clean-architecture-with-typescript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ricardo-Costa/clean-architecture-with-typescript/issues"
+  },
+  "homepage": "https://github.com/Ricardo-Costa/clean-architecture-with-typescript#readme",
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "jest": "^27.0.6",
+    "lint-staged": "^11.1.2",
+    "standard": "^16.0.3"
+  },
+  "dependencies": {}
+}
