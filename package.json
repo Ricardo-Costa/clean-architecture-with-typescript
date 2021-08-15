@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Ricardo-Costa/clean-architecture-with-typescript#readme",
   "devDependencies": {
     "@types/jest": "^27.0.1",
+    "husky": "^7.0.1",
     "jest": "^27.0.6",
     "lint-staged": "^11.1.2",
     "standard": "^16.0.3"
