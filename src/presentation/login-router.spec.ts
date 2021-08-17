@@ -99,7 +99,7 @@ class User {
     }
 }
 
-class UserRepositore {
+class UserRepository {
 
     static create(name: string, email: string, password: string): User {
         let user = new User()
@@ -122,7 +122,7 @@ const NAME = "Ricardo"
 const EMAIL = "ricardo@mail.com"
 const PASSWORD = "123456"
 const mockUsers: Array<User> = []
-mockUsers.push(UserRepositore.create(NAME, EMAIL, PASSWORD))
+mockUsers.push(UserRepository.create(NAME, EMAIL, PASSWORD))
 
 class LoginRouter implements Router {
     router(httpRequest: HttpRequest): HttpResponseMetadata {
@@ -133,7 +133,7 @@ class LoginRouter implements Router {
         if (!email || !password) {
             return HttpResponse.badRequest('Invalid email or password.')
         }
-        const user = UserRepositore.findOneByEmailAndPassword(email, password)
+        const user = UserRepository.findOneByEmailAndPassword(email, password)
         if (user) {
             return HttpResponse.ok(user)
         }
