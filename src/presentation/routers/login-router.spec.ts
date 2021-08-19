@@ -20,8 +20,12 @@ const makeSup = () => {
         auth(email: string, password: string): HttpResponseMetadata {
             this.email = email
             this.password = password
-            if (email === EMAIL && password === PASSWORD) {
-                return HttpResponse.ok({})
+            const user = UserRepository.findOneByEmailAndPassword(email, password)
+            if (user) {
+                return HttpResponse.ok({
+                    user,
+                    accessToken: 'valid_access_token'
+                })
             }
             return HttpResponse.notAuthorized()
         }
@@ -71,9 +75,11 @@ describe('Login Router', () => {
         }
         const resp: HttpResponseMetadata = sut.router(httpRequest)
         expect(resp.statusCode).toBe(401)
+        // expect(resp.body).toEqual(new NotAuthorizedError(''))
+        expect(resp.body).toBeInstanceOf(Error)
     })
     
-    test('Should return 200 if found User.', () => {
+    test('Should return 200, User and accessToken if valid login.', () => {
         const { sut } = makeSup()
         const httpRequest = {
             body: {
@@ -83,6 +89,8 @@ describe('Login Router', () => {
         }
         const resp: HttpResponseMetadata = sut.router(httpRequest)
         expect(resp.statusCode).toBe(200)
+        expect(resp.body).toHaveProperty('user')
+        expect(resp.body).toHaveProperty('accessToken')
     })
     
     test('Should to call AuthUseCase with correct params.', () => {

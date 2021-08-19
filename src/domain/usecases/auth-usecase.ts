@@ -6,7 +6,10 @@ export default class AuthUseCase {
     auth(email: string, password: string): HttpResponseMetadata {
         const user = UserRepository.findOneByEmailAndPassword(email, password)
         if (user) {
-            return HttpResponse.ok(user)
+            return HttpResponse.ok({
+                user,
+                accessToken: 'valid_access_token'
+            })
         }
         return HttpResponse.notAuthorized()
     }

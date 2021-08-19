@@ -12,13 +12,20 @@ export default class LoginRouter implements Router {
     ) {}
 
     router(httpRequest: HttpRequest): HttpResponseMetadata {
-        if (!httpRequest || !httpRequest.body) {
-            return HttpResponse.serverError('Invalid request propertties.')
+        try {
+            if (!httpRequest || !httpRequest.body) {
+                return HttpResponse.serverError('Invalid request propertties.')
+            }
+            if (!this.authUseCase) {
+                return HttpResponse.serverError('Has no Auth instance.')
+            }
+            const { email, password } = <UserDTO>httpRequest.body
+            if (!email || !password) {
+                return HttpResponse.badRequest('Invalid email or password.')
+            }
+            return this.authUseCase.auth(email, password)
+        } catch (error) {
+            return HttpResponse.serverError('Server error, try again.')
         }
-        const { email, password } = <UserDTO>httpRequest.body
-        if (!email || !password) {
-            return HttpResponse.badRequest('Invalid email or password.')
-        }
-        return this.authUseCase.auth(email, password)
     }
 }
