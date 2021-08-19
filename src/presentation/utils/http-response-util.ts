@@ -1,6 +1,7 @@
 import ServerError from "../errors/server-error"
 import MissingParamError from "../errors/missing-param-error"
 import { HttpResponseMetadata } from "../../infrastructure/types/http-response-metadata"
+import NotAuthorizedError from "../errors/not-authorized-error"
 
 export default class HttpResponse {
     
@@ -22,6 +23,13 @@ export default class HttpResponse {
         return {
             statusCode: 404,
             body: null
+        }
+    }
+
+    static notAuthorized (): HttpResponseMetadata {
+        return {
+            statusCode: 401,
+            body: new NotAuthorizedError('Invalid Email or Password.')
         }
     }
 

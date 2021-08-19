@@ -3,9 +3,14 @@ import HttpRequest from "../utils/http-request-util"
 import HttpResponse from "../utils/http-response-util"
 import { UserDTO } from "../../infrastructure/dtos/user-dto"
 import { HttpResponseMetadata } from "../../infrastructure/types/http-response-metadata"
-import UserRepository from "../../domain/repositories/user-repository"
+import AuthUseCase from "../../domain/usecases/auth-usecase"
 
 export default class LoginRouter implements Router {
+
+    constructor(
+        readonly authUseCase: AuthUseCase
+    ) {}
+
     router(httpRequest: HttpRequest): HttpResponseMetadata {
         if (!httpRequest || !httpRequest.body) {
             return HttpResponse.serverError('Invalid request propertties.')
@@ -14,10 +19,6 @@ export default class LoginRouter implements Router {
         if (!email || !password) {
             return HttpResponse.badRequest('Invalid email or password.')
         }
-        const user = UserRepository.findOneByEmailAndPassword(email, password)
-        if (user) {
-            return HttpResponse.ok(user)
-        }
-        return HttpResponse.notFound()
+        return this.authUseCase.auth(email, password)
     }
 }
