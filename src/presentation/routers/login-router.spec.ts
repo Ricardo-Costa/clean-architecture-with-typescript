@@ -17,7 +17,7 @@ const makeSup = () => {
         email: string = ''
         password: string = ''
     
-        auth(email: string, password: string): HttpResponseMetadata {
+       async auth(email: string, password: string): Promise<HttpResponseMetadata> {
             this.email = email
             this.password = password
             const user = UserRepository.findOneByEmailAndPassword(email, password)
@@ -41,7 +41,7 @@ const makeSup = () => {
 
 describe('Login Router', () => {
 
-    test('Should return 400 if no email or password is provided.', () => {
+    test('Should return 400 if no email or password is provided.', async () => {
         const { sut } = makeSup()
         const httpRequest = {
             body: {
@@ -49,7 +49,7 @@ describe('Login Router', () => {
                 password: ''
             }
         }
-        const resp: HttpResponseMetadata = sut.router(httpRequest)
+        const resp: HttpResponseMetadata = await sut.router(httpRequest)
         expect(resp.statusCode).toBe(400)
     })
 
@@ -65,7 +65,7 @@ describe('Login Router', () => {
     //     expect(resp.statusCode).toBe(404)
     // })
 
-    test('Should return 401 when invalid credencials are provided.', () => {
+    test('Should return 401 when invalid credencials are provided.', async () => {
         const { sut } = makeSup()
         const httpRequest = {
             body: {
@@ -73,13 +73,13 @@ describe('Login Router', () => {
                 password: 'invalid_password'
             }
         }
-        const resp: HttpResponseMetadata = sut.router(httpRequest)
+        const resp: HttpResponseMetadata = await sut.router(httpRequest)
         expect(resp.statusCode).toBe(401)
         // expect(resp.body).toEqual(new NotAuthorizedError(''))
         expect(resp.body).toBeInstanceOf(Error)
     })
     
-    test('Should return 200, User and accessToken if valid login.', () => {
+    test('Should return 200, User and accessToken if valid login.', async () => {
         const { sut } = makeSup()
         const httpRequest = {
             body: {
@@ -87,7 +87,7 @@ describe('Login Router', () => {
                 password: PASSWORD
             }
         }
-        const resp: HttpResponseMetadata = sut.router(httpRequest)
+        const resp: HttpResponseMetadata = await sut.router(httpRequest)
         expect(resp.statusCode).toBe(200)
         expect(resp.body).toHaveProperty('user')
         expect(resp.body).toHaveProperty('accessToken')

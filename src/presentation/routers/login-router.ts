@@ -11,7 +11,7 @@ export default class LoginRouter implements Router {
         readonly authUseCase: AuthUseCase
     ) {}
 
-    router(httpRequest: HttpRequest): HttpResponseMetadata {
+    async router(httpRequest: HttpRequest): Promise<HttpResponseMetadata> {
         try {
             if (!httpRequest || !httpRequest.body) {
                 return HttpResponse.serverError('Invalid request propertties.')
@@ -23,7 +23,7 @@ export default class LoginRouter implements Router {
             if (!email || !password) {
                 return HttpResponse.badRequest('Invalid email or password.')
             }
-            return this.authUseCase.auth(email, password)
+            return await this.authUseCase.auth(email, password)
         } catch (error) {
             return HttpResponse.serverError('Server error, try again.')
         }

@@ -3,7 +3,7 @@ import HttpResponse from "../../presentation/utils/http-response-util";
 import UserRepository from "../repositories/user-repository";
 
 export default class AuthUseCase {
-    auth(email: string, password: string): HttpResponseMetadata {
+    async auth(email: string, password: string): Promise<HttpResponseMetadata> {
         const user = UserRepository.findOneByEmailAndPassword(email, password)
         if (user) {
             return HttpResponse.ok({
