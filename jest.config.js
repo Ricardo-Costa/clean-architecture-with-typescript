@@ -1,6 +1,11 @@
 /** @type {import('@ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   preset: 'ts-jest',
+  testMatch: [
+    '**/?(*.)+(spec).ts?(x)',
+    '**/?(*.)+(test).ts?(x)'
+  ],
   testEnvironment: 'node',
-  testMatch: ['**/?(*.)+(spec).ts?(x)']
+  coverageDirectory: 'coverage',
+  collectCoverageFrom: ['./src/**/*.ts']
 }
