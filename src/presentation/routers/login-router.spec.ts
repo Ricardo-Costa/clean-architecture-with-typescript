@@ -1,17 +1,12 @@
 import UserRepository from "../../domain/repositories/user-repository"
-import { mockUsers } from "../../mocks/users-data"
 import LoginRouter from "./login-router"
 import { HttpResponseMetadata } from "../../infrastructure/types/http-response-metadata"
 import AuthUseCase from "../../domain/usecases/auth-usecase"
 import HttpResponse from "../../../src/presentation/utils/http-response-util"
-import { EmailValidator } from "../validators/email.validator"
-import { HttpStatusCode } from "../enums/http-status-code.enum"
+import EmailValidator from "../validators/email.validator"
+import HttpStatusCode from "../enums/http-status-code.enum"
 import ValidatorSpy from "../../../__mocks__/validators/validator.spy"
-
-const NAME = "Ricardo"
-const EMAIL = "ricardo@mail.com"
-const PASSWORD = "123456"
-mockUsers.push(UserRepository.create(NAME, EMAIL, PASSWORD))
+import { EMAIL, PASSWORD } from "../../../__mocks__/user.sut"
 
 const makeAuthUseCase = () => {
     // moked class

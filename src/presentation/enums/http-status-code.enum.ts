@@ -1,4 +1,4 @@
-export enum HttpStatusCode {
+enum HttpStatusCode {
 
     OK = 200,
     CREATED = 201,
@@ -14,3 +14,5 @@ export enum HttpStatusCode {
     BAD_GATEWAY = 502
 
 }
+
+export default HttpStatusCode

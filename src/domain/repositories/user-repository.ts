@@ -1,5 +1,5 @@
 import User from "../entities/user-entity"
-import { mockUsers } from "../../mocks/users-data"
+import { mockUsers } from "../../../__mocks__/user.sut"
 
 export default class UserRepository {
 

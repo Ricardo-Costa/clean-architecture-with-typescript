@@ -4,8 +4,8 @@ import HttpResponse from "../utils/http-response-util"
 import { UserDTO } from "../../infrastructure/dtos/user-dto"
 import { HttpResponseMetadata } from "../../infrastructure/types/http-response-metadata"
 import AuthUseCase from "../../domain/usecases/auth-usecase"
-import { EmailValidator } from "../validators/email.validator"
-import { HttpStatusCode } from "../enums/http-status-code.enum"
+import EmailValidator from "../validators/email.validator"
+import HttpStatusCode from "../enums/http-status-code.enum"
 
 export default class LoginRouter implements Router {
 

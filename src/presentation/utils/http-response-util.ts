@@ -2,7 +2,7 @@ import ServerError from "../errors/server-error"
 import MissingParamError from "../errors/missing-param-error"
 import { HttpResponseMetadata } from "../../infrastructure/types/http-response-metadata"
 import NotAuthorizedError from "../errors/not-authorized-error"
-import { HttpStatusCode } from "../enums/http-status-code.enum"
+import HttpStatusCode from "../enums/http-status-code.enum"
 
 export default class HttpResponse {
     
