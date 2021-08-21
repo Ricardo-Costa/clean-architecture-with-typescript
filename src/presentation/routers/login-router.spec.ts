@@ -6,7 +6,7 @@ import AuthUseCase from "../../domain/usecases/auth-usecase"
 import HttpResponse from "../../../src/presentation/utils/http-response-util"
 import { EmailValidator } from "../validators/email.validator"
 import { HttpStatusCode } from "../enums/http-status-code.enum"
-import ValidatorSpy from "../../../__mocks__/utils/validator.spy"
+import ValidatorSpy from "../../../__mocks__/validators/validator.spy"
 
 const NAME = "Ricardo"
 const EMAIL = "ricardo@mail.com"
@@ -86,18 +86,6 @@ describe('Login Router', () => {
         const resp: HttpResponseMetadata = await sut.router(httpRequest)
         expect(resp.statusCode).toBe(HttpStatusCode.UNPROCESSABLE_ENTITY)
     })
-
-    // test('Should return 404 if not found User.', () => {
-    //     const { sut } = makeSup()
-    //     const httpRequest = {
-    //         body: {
-    //             email: 'invalid@mail.com',
-    //             password: 'invalid_password'
-    //         }
-    //     }
-    //     const resp: HttpResponseMetadata = sut.router(httpRequest)
-    //     expect(resp.statusCode).toBe(404)
-    // })
 
     test('Should return 401 when invalid credencials are provided.', async () => {
         const { sut } = makeSup()

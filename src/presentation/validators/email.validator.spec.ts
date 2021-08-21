@@ -1,4 +1,4 @@
-import ValidatorSpy from '../../../__mocks__/utils/validator.spy'
+import ValidatorSpy from '../../../__mocks__/validators/validator.spy'
 import { EmailValidator } from './email.validator'
 
 const makeEmailValidator = () => {
