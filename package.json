@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "npx jest --passWithNoTests",
+    "test": "npx jest --watch --silent --verbose --colors",
+    "test:staged": "npx jest --passWithNoTests --findRelatedTests --silent",
     "prepare": "husky install"
   },
   "repository": {
