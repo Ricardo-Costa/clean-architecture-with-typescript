@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "npx jest --watch --silent --verbose --colors",
-    "test:staged": "npx jest --passWithNoTests --findRelatedTests --silent",
+    "test:staged": "npx jest --passWithNoTests --findRelatedTests ./src --silent",
     "prepare": "husky install"
   },
   "repository": {
