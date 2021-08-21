@@ -1,5 +1,7 @@
+import validator from "validator"
+
 export class EmailValidator {
     isValid(email: string): boolean {
-        return /@/.test(email)
+        return validator.isEmail(email)
     }
 }

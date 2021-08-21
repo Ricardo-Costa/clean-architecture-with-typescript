@@ -6,6 +6,7 @@ import AuthUseCase from "../../domain/usecases/auth-usecase"
 import HttpResponse from "../../../src/presentation/utils/http-response-util"
 import { EmailValidator } from "../validators/email.validator"
 import { HttpStatusCode } from "../enums/http-status-code.enum"
+import ValidatorSpy from "../../../__mocks__/utils/validator.spy"
 
 const NAME = "Ricardo"
 const EMAIL = "ricardo@mail.com"
@@ -35,18 +36,27 @@ const makeAuthUseCase = () => {
 }
 
 const makeEmailValidator = () => {
+    const validator = new ValidatorSpy()
     // moked class
-    class EmailValidatorSpy extends EmailValidator {}
-    return new EmailValidatorSpy()
+    class EmailValidatorSpy extends EmailValidator {
+        isValid(email: string): boolean {
+            return validator.isEmail(email)
+        }
+    }
+    return {
+        emailValidator: new EmailValidatorSpy(),
+        validator
+    }
 }
 
 const makeSup = () => {
     const authUseCase = makeAuthUseCase()
-    const emailValidator = makeEmailValidator()
+    const { emailValidator, validator } = makeEmailValidator()
     const sut = new LoginRouter(authUseCase, emailValidator)
     return {
         sut,
-        authUseCase
+        authUseCase,
+        validator
     }
 }
 
@@ -65,13 +75,14 @@ describe('Login Router', () => {
     })
 
     test('Should return 422 if no valid emai provided.', async () => {
-        const { sut } = makeSup()
+        const { sut, validator } = makeSup()
         const httpRequest = {
             body: {
-                email: 'invalid_mail_format',
+                email: 'invalid_email@mail.com',
                 password: 'valid_password'
             }
         }
+        validator.isValidEmail = false
         const resp: HttpResponseMetadata = await sut.router(httpRequest)
         expect(resp.statusCode).toBe(HttpStatusCode.UNPROCESSABLE_ENTITY)
     })
