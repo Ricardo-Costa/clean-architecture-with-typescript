@@ -2,40 +2,41 @@ import ServerError from "../errors/server-error"
 import MissingParamError from "../errors/missing-param-error"
 import { HttpResponseMetadata } from "../../infrastructure/types/http-response-metadata"
 import NotAuthorizedError from "../errors/not-authorized-error"
+import { HttpStatusCode } from "../enums/http-status-code.enum"
 
 export default class HttpResponse {
     
-    static badRequest (paramName: string): HttpResponseMetadata {
+    static badRequest (paramName: string, statusCode: number = HttpStatusCode.BAD_REQUEST): HttpResponseMetadata {
         return {
-            statusCode: 400,
+            statusCode: statusCode,
             body: new MissingParamError(paramName)
         }
     }
 
     static serverError (description: string): HttpResponseMetadata {
         return {
-            statusCode: 500,
+            statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
             body: new ServerError(description)
         }
     }
 
     static notFound (): HttpResponseMetadata {
         return {
-            statusCode: 404,
+            statusCode: HttpStatusCode.NOT_FOUND,
             body: null
         }
     }
 
     static notAuthorized (): HttpResponseMetadata {
         return {
-            statusCode: 401,
+            statusCode: HttpStatusCode.UNAUTHORIZED,
             body: new NotAuthorizedError('Invalid Email or Password.')
         }
     }
 
     static ok (body: object | Array<object>): HttpResponseMetadata {
         return {
-            statusCode: 200,
+            statusCode: HttpStatusCode.OK,
             body
         }
     }

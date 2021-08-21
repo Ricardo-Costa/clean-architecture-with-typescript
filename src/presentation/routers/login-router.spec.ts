@@ -4,14 +4,15 @@ import LoginRouter from "./login-router"
 import { HttpResponseMetadata } from "../../infrastructure/types/http-response-metadata"
 import AuthUseCase from "../../domain/usecases/auth-usecase"
 import HttpResponse from "../../../src/presentation/utils/http-response-util"
+import { EmailValidator } from "../validators/email.validator"
+import { HttpStatusCode } from "../enums/http-status-code.enum"
 
 const NAME = "Ricardo"
 const EMAIL = "ricardo@mail.com"
 const PASSWORD = "123456"
 mockUsers.push(UserRepository.create(NAME, EMAIL, PASSWORD))
 
-const makeSup = () => {
-
+const makeAuthUseCase = () => {
     // moked class
     class AuthUseCaseSpy extends AuthUseCase {
         email: string = ''
@@ -30,9 +31,19 @@ const makeSup = () => {
             return HttpResponse.notAuthorized()
         }
     }
+    return new AuthUseCaseSpy()
+}
 
-    const authUseCase = new AuthUseCaseSpy()
-    const sut = new LoginRouter(authUseCase)
+const makeEmailValidator = () => {
+    // moked class
+    class EmailValidatorSpy extends EmailValidator {}
+    return new EmailValidatorSpy()
+}
+
+const makeSup = () => {
+    const authUseCase = makeAuthUseCase()
+    const emailValidator = makeEmailValidator()
+    const sut = new LoginRouter(authUseCase, emailValidator)
     return {
         sut,
         authUseCase
@@ -50,7 +61,19 @@ describe('Login Router', () => {
             }
         }
         const resp: HttpResponseMetadata = await sut.router(httpRequest)
-        expect(resp.statusCode).toBe(400)
+        expect(resp.statusCode).toBe(HttpStatusCode.BAD_REQUEST)
+    })
+
+    test('Should return 422 if no valid emai provided.', async () => {
+        const { sut } = makeSup()
+        const httpRequest = {
+            body: {
+                email: 'invalid_mail_format',
+                password: 'valid_password'
+            }
+        }
+        const resp: HttpResponseMetadata = await sut.router(httpRequest)
+        expect(resp.statusCode).toBe(HttpStatusCode.UNPROCESSABLE_ENTITY)
     })
 
     // test('Should return 404 if not found User.', () => {
@@ -74,7 +97,7 @@ describe('Login Router', () => {
             }
         }
         const resp: HttpResponseMetadata = await sut.router(httpRequest)
-        expect(resp.statusCode).toBe(401)
+        expect(resp.statusCode).toBe(HttpStatusCode.UNAUTHORIZED)
         // expect(resp.body).toEqual(new NotAuthorizedError(''))
         expect(resp.body).toBeInstanceOf(Error)
     })
