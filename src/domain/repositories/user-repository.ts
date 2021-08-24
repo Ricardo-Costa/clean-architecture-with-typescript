@@ -3,7 +3,7 @@ import { mockUsers } from "../../../__mocks__/user.sut"
 
 export default class UserRepository {
 
-    static create(name: string, email: string, password: string): User {
+    async create(name: string, email: string, password: string): Promise<User> {
         let user = new User()
         user.setEmail = email
         user.setName = name
@@ -11,7 +11,7 @@ export default class UserRepository {
         return user
     }
 
-    static findOneByEmailAndPassword(email: string, password: string): User | null {
+    async findOneByEmailAndPassword(email: string, password: string): Promise<User | null> {
         let users: Array<User> = mockUsers.filter(user => user.getEmail === email && user.getPassword === password)
         if (users.length === 1) {
             return users[0]

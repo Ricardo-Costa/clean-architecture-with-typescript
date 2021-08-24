@@ -9,15 +9,24 @@ import ValidatorSpy from "../../../__mocks__/validators/validator.spy"
 import { EMAIL, PASSWORD } from "../../../__mocks__/user.sut"
 
 const makeAuthUseCase = () => {
+    const userRepository = new UserRepository()
     // moked class
     class AuthUseCaseSpy extends AuthUseCase {
+
+        //private userRepository: UserRepository
+
         email: string = ''
         password: string = ''
-    
+
+        constructor(userRepository: UserRepository) {
+            super(userRepository)
+            this.userRepository = userRepository
+        }
+
        async auth(email: string, password: string): Promise<HttpResponseMetadata> {
             this.email = email
             this.password = password
-            const user = UserRepository.findOneByEmailAndPassword(email, password)
+            const user = await this.userRepository.findOneByEmailAndPassword(email, password)
             if (user) {
                 return HttpResponse.ok({
                     user,
@@ -27,7 +36,7 @@ const makeAuthUseCase = () => {
             return HttpResponse.notAuthorized()
         }
     }
-    return new AuthUseCaseSpy()
+    return new AuthUseCaseSpy(userRepository)
 }
 
 const makeEmailValidator = () => {
