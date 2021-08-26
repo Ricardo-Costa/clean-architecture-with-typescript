@@ -19,9 +19,6 @@ export default class AuthUseCase {
         if (!password) {
             throw new MissingParamError('Password')
         }
-        if (!this.userRepository) {
-            throw new ServerError('UserRepository is no-instanced')
-        }
         const user = await this.userRepository.findOneByEmailAndPassword(email, password)
         if (user) {
             return HttpResponse.ok({

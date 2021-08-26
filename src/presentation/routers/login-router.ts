@@ -19,12 +19,6 @@ export default class LoginRouter implements Router {
             if (!httpRequest || !httpRequest.body) {
                 return HttpResponse.serverError('Invalid request propertties.')
             }
-            if (!this.authUseCase) {
-                return HttpResponse.serverError('Has no Auth instance.')
-            }
-            if (!this.emailValidator) {
-                return HttpResponse.serverError('Has no EmailValidator instance.')
-            }
             const { email, password } = <UserDTO>httpRequest.body
             if (!email || !password) {
                 return HttpResponse.badRequest('Invalid email or password.')
