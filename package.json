@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@types/validator": "^13.6.3",
+    "jsonwebtoken": "^8.5.1",
     "validator": "^13.6.0"
   }
 }
